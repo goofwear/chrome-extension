@@ -12,14 +12,16 @@ chrome.webRequest.onBeforeRequest.addListener(
             || (details.url.substr(-4) == '.zip')
             || (details.url.substr(-4) == '.txt')
             || (details.url.substr(-4) == '.pdf')
-            || (details.url.substr(-3) == '.js')) {
+            || (details.url.substr(-3) == '.js')
+			|| (details.url.indexOf('mega.nz/linux') > -1)) {
 
                 return { cancel:  false };
         }
         else
-        {
+        {			
             var hash = '';
             if (details.url.indexOf('#') > -1) hash = '#' + details.url.split('#')[1];
+			else if (details.url.indexOf('https://mega.nz/') > -1 && details.url.length > 16) hash = '#' + details.url.split('https://mega.nz/')[1];
             return { redirectUrl:  chrome.extension.getURL("mega/secure.html" + hash) };
         }
     },
